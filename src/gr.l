@@ -15,6 +15,7 @@
 	void setS(char c);
 	void invalidGrammar();
 	void irregularGrammar();
+	void leftRecursivity();
 
 	void addProduction();
 	extern grammar* G;
@@ -69,6 +70,10 @@
 	BEGIN P2_STATE;
 };
 
+<P_STATE>([A-Z][A-Z]+[\ \t\r\n]*-[\ \t\r\n]*>[\ \t\r\n]*) {
+	invalidGrammar();
+};
+
 <P_STATE>([^A-Z\\a-z\->]) {
 	invalidGrammar();
 }
@@ -78,7 +83,15 @@
 	int i=0;
 	c=yytext[i++];
 	reset(right);
+	int first=1;
 	while(IS_UPPER(c)||IS_LOWER(c)||c=='\\'){
+		if(first){
+			if(c==left){
+				leftRecursivity();
+			}
+		}else{
+			first=0;
+		}
 		char * p = malloc(sizeof(c));
 		*p=c;
 		insert(right, p);
@@ -129,16 +142,6 @@ void fin(){
 	//printf("fin\n");
 }
 
-/*void
-controlLeft()
-{
-	if(dir==RIGHT){
-		printf("No puede haber producciones derechas e izquierdas\n");
-		exit(0);
-	}
-	dir=LEFT;
-}*/
-
 void addVN(char c){
 	G->VN[c-'A']=1;
 }
@@ -151,16 +154,6 @@ void setS(char c){
 	G->S=c;
 }
 
-/*void
-controlRight()
-{
-	if(dir==LEFT){
-		printf("No puede haber producciones derechas e izquierdas\n");
-		exit(0);
-	}
-	dir=RIGHT;
-}*/
-
 void
 invalidGrammar()
 {
@@ -169,9 +162,9 @@ invalidGrammar()
 }
 
 void
-irregularGrammar()
+leftRecursivity()
 {
-	printf("\nLa gramática debe ser regular\n");
+	printf("\nLa gramática no debe tener recursividad izquierda\n");
 	exit(1);
 }
 
