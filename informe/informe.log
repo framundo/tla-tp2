@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.9.16)  22 NOV 2012 23:55
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.9.16)  23 NOV 2012 20:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -387,7 +387,10 @@ Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/t1enc.def
 File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
-)) (./informe.aux)
+)) (./informe.aux
+LaTeX Info: Redefining \. on input line 6.
+LaTeX Info: Redefining \% on input line 6.
+)
 \openout1 = `informe.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
@@ -491,55 +494,50 @@ Underfull \hbox (badness 10000) in paragraph at lines 47--48
  []
 
 [3] [4]
-Underfull \hbox (badness 10000) in paragraph at lines 93--95
+Underfull \hbox (badness 10000) in paragraph at lines 94--96
 
  []
 
-
-LaTeX Warning: Reference `fig:ejemplo' on page 5 undefined on input line 103.
-
-<./fotos/ejemplo.png, id=23, 228.855pt x 132.495pt>
+<./fotos/ejemplo.png, id=23, 710.655pt x 460.72125pt>
 File: ./fotos/ejemplo.png Graphic file (type png)
- <use ./fotos/ejemplo.png>
-Package pdftex.def Info: ./fotos/ejemplo.png used on input line 107.
-(pdftex.def)             Requested size: 228.85443pt x 132.49466pt.
+
+<use ./fotos/ejemplo.png>
+Package pdftex.def Info: ./fotos/ejemplo.png used on input line 110.
+(pdftex.def)             Requested size: 426.39629pt x 276.43488pt.
+
+Overfull \hbox (81.39629pt too wide) in paragraph at lines 110--111
+ [][] 
+ []
 
 
 Package caption Warning: Unused \captionsetup[lstlisting] on input line 10.
 See the caption package documentation for explanation.
 
-[5 <./fotos/ejemplo.png>] (./informe.aux
+[5] [6 <./fotos/ejemplo.png>] (./informe.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
-)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+) ) 
 Here is how much of TeX's memory you used:
  5402 strings out of 493488
  76232 string characters out of 3141326
- 136954 words of memory out of 3000000
+ 136985 words of memory out of 3000000
  8651 multiletter control sequences out of 15000+200000
  10493 words of font info for 23 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
  38i,7n,38p,473b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
-</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
-/usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></u
-sr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr
-/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/l
-ocal/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/loc
-al/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local
-/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/t
-exlive/2012/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on informe.pdf (5 pages, 146315 bytes).
+{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc
+}</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></
+usr/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></us
+r/local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/
+local/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/lo
+cal/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/loca
+l/texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/
+texlive/2012/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
+Output written on informe.pdf (6 pages, 195976 bytes).
 PDF statistics:
- 54 PDF objects out of 1000 (max. 8388607)
- 37 compressed objects within 1 object stream
+ 57 PDF objects out of 1000 (max. 8388607)
+ 39 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

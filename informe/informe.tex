@@ -69,7 +69,7 @@ El analizador recibe como entrada una palabra que podr\'ia pertenecer al lenguaj
 \begin{center}
 ASDR palabra
 \end{center}
-El programa ASDR devuelve '$palabra$ doesn't belong.' si la cadena no pertenece o '$palabra$ belongs' y a continuaci\'on el conjunto de producciones que dieron lugar a dicha palabra.
+El programa ASDR devuelve '$palabra$ no pertenece' si la cadena no pertenece o '$palabra$ pertenece' y a continuaci\'on el conjunto de producciones que dieron lugar a dicha palabra, y en el orden que fueron utilizadas.
 
 \section{Consideraciones realizadas}
 Para ejecutar el \textit{parsing} de la entrada de archivos se utiliz\'o LEX tal y como hicimos con el trabajo anterior.\\
@@ -86,6 +86,7 @@ Se guarda, adem\'as, las producciones utilizadas para luego poder imprimirlas e 
 
 \section{Dificultades encontradas}
 
+La principal limitaci\'on encontrada es que nuestro programa utiliza una funci\'on de LEX que funciona en Ubuntu pero no en Mac OSX. Esta funci\'on es \textit{gr\_switch\_to\_buffer}. Desconocemos el funcionamiento interno de LEX as\'i que no supimos como arreglarlo, pero no supuso un problema dado que todos poseemos Ubuntu. \\
 En general podemos decir que este trabajo nos pareci\'o m\'as f\'acil que el anterior, dado que ya nos defend\'iamos mejor con LEX. Adem\'as, el m\'etodo de an\'alisis descendente lo ten\'iamos fresco del parcial que dimos hace s\'olo unas pocas semanas, y nos acord\'abamos bastante del procedimiento a seguir.\\
 El lenguaje C no genera problemas dado que ya estamos acostumbrados a programar con \'el desde hace 3 a\~nos de carrera.
 
@@ -95,16 +96,18 @@ Otra posible extensi\'on podr\'ia ser que el programa mantenga un log de las pro
 
 
 \section{Ejemplo de uso}
+Luego de hacer make, se genera el ASDR.c con una gram\'atica.\\
 Dada la gram\'atica:
 \begin{center}
 G1 = ({A, B, C}, {a, b, c},A, {A -> aBC|cB, B -> aA|b, C -> c|\textbackslash})
 \end{center}
 Se ejecuta el comando \textit{./bin/genASDR ./gr/ejemplo.gr} y se obtiene un archivo llamado ASDR.c.\\
-A continuaci\'on se compila con la linea \textit{gcc -o gram1 ASDR.c} y se ejecuta pas\'andole una cadena, tal y como se ve en la \ref{fig:ejemplo}.
+A continuaci\'on se compila con la linea \textit{gcc -o gram1 ASDR.c} y se ejecuta pas\'andole una cadena, tal y como se ve en la \ref{fig:ejemplo}.\\
+Si se le pasa una gram\'atica inv\'alida, como por ejemplo, con recursividad izquierda, el programa lo indica a la hora de intentar generar el ASDR.c.
  
 \begin{figure}[H]
 \centering
-\includegraphics[scale=1]{./fotos/ejemplo.png}
+\includegraphics[scale=0.6]{./fotos/ejemplo.png}
 \caption{ Ejemplo de uso}
 \label{fig:ejemplo}
 \end{figure}

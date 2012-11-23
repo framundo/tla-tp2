@@ -24,13 +24,20 @@ int main(int argc, char **argv){
     if(strcmp(argv[1]+len-3,".gr")==0){
 		printf("Leyendo archivo .gr\n");
 		G=newGrammar();
+							printf("1\n");
 		gr_switch_to_buffer( gr_create_buffer( file, YY_BUF_SIZE ) );
 		if(!grlex()){
+							printf("if\n");
+
 			printGrammar(G);
-			//TODO
+			//TODO		printf("1\n");
+		printf("4\n");
+
 			generateASDR(G);
             printf("\n");
 		}
+				printf("2\n");
+
 		return 1;
 	}
 	else{
