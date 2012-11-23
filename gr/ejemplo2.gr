@@ -1,1 +1,1 @@
-G1 = ({B, A, S}, {0,1},S, {S -> 0B|1A, A -> 0|0S|1AA, B -> 1|1S|0BB})
+G1 = ({B, A, S}, {a,b},S, {S -> aB|bA, A -> a|aS|bAA, B -> b|bS|aBB})
