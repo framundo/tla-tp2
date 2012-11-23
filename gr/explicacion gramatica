@@ -1,5 +1,5 @@
 ejemplo2.gr ejercicio 1 tp2 L(G) = {ω ∈ {0, 1}∗/ceros(ω) = unos(ω) y |ω| > 0}
 ejemplo3.gr ejercicio 2 tp2 L(G) = {a^ib^i/i ≥ 0} (GRAMATICA LIBRE DE CONTEXTO)
-ejemplo4.gr ejercicio 3 tp2 L(G) = {0^(2k)2 ∨ 0^(2k+1)1 con k ≥ 0}
+ejemplo4.gr ejercicio 3 tp2 L(G) = {a^(2k)c ∨ a^(2k+1)b con k ≥ 0}
 ejemplo5.gr ejercicio 5 tp2 L(G) = {b^(2i)/i ≥ 1}
 ejemplo6.gr (GRAMATICA CON RECURSIVIDAD IZQUIERDA)
