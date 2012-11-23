@@ -87,9 +87,9 @@
 	while(IS_UPPER(c)||IS_LOWER(c)||c=='\\'){
 		if(first){
 			if(c==left){
+				printf("%c%c%c\t%c==%c\n",yytext[0],yytext[1],yytext[2],c,left);
 				leftRecursivity();
 			}
-		}else{
 			first=0;
 		}
 		char * p = malloc(sizeof(c));

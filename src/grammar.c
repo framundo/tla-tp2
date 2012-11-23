@@ -73,6 +73,7 @@ int compareP(void* p1, void* p2){
 		result-=(*c2)*multiplier;
 		multiplier*=100;
 	};
+	printf("%d\n",result);
 	return result;
 }
 

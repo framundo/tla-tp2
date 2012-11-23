@@ -1,6 +1,6 @@
 #include "asdr.h"
 
-static void print_declarations( FILE *file, struct grammar *grammar ) {
+static void declare( FILE *file, grammar *g ) {
 	int i;
     fprintf( file, "#include <stdio.h>\n" );
     fprintf( file, "#include <stdlib.h>\n" );
@@ -8,30 +8,36 @@ static void print_declarations( FILE *file, struct grammar *grammar ) {
     fprintf( file, "#include <ctype.h>\n" );
     fprintf( file, "#include <stdbool.h>\n" );
     fprintf( file, "\n" );
+    fprintf( file, "#define MAX_SIZE 1024\n\n");
     fprintf( file, "struct production {\n" );
     fprintf( file, "\tchar *data;\n" );
     fprintf( file, "\tstruct production *next;\n" );
     fprintf( file, "};\n" );
     fprintf( file, "\n" );
 
-    fprintf( file, "static bool process  ( char *str, struct production prod );\n");
+    fprintf( file, "static bool procesar  ( char *str, struct production prod );\n");
 
     for ( i = 0; i < SIZE; i++ ) {
-		if(grammar->VN[i]){
-			fprintf( file, "static bool process_%c( char *str, struct production prod );\n", i+'A' );
+		if(g->VN[i]){
+			fprintf( file, "static bool procesar_%c( char *str, struct production prod );\n", i+'A' );
         }
     }
 
     fprintf( file, "\n" );
     fprintf( file, "static bool (*non_terminal_function[0x100]) ( char*, struct production ) = {\n" );
 
-	int size=0;
     for ( i = 0; i < SIZE; i++ ) {
-		if(grammar->VN[i]){
-			size++;
-			fprintf( file, "\t['%c'] = process_%c,\n", i+'A', i+'A' );
+		if(g->VN[i]){
+			fprintf( file, "\t['%c'] = procesar_%c,\n", i+'A', i+'A' );
 		}
     }
+
+	int size=0;
+    reset(g->P);
+    production *p;
+    while(p=getNext(g->P)){
+		size++;
+	}
 
     fprintf( file, "};\n" );
     fprintf( file, "\n" );
@@ -39,31 +45,43 @@ static void print_declarations( FILE *file, struct grammar *grammar ) {
     fprintf( file, "\n" );
     fprintf( file, "static const char *productions[] = {\n" );
     
-    production *p;
-    reset(grammar->P);
-    while(p=getNext(grammar->P)){
-		reset(p->right);
-		char *c=getNext(p->right);
-		if ( *c != '\\' ) {
-					fprintf( file, "\t\"%c->%c", p->left,*c);
-					while(c=getNext(p->right)){
-						fprintf( file, "%c", *c);
+    for(i=0; i<SIZE; i++){
+		reset(g->P);
+		if(g->VN[i]){
+			while(p=getNext(g->P)){
+				if(p->left == i+'A'){
+					reset(p->right);
+					char *c=getNext(p->right);
+					if ( *c != '\\' ) {
+						fprintf( file, "\t\"%c->%c", p->left,*c);
+						while(c=getNext(p->right)){
+							fprintf( file, "%c", *c);
+						}
+						fprintf(file, "\",\n");
+					} else {
+						fprintf( file, "\t\"%c->\\\\\",\n", p->left );
 					}
-					fprintf(file, "\",\n");
-				} else {
-					fprintf( file, "\t\"%c->\\\\\",\n", p->left );
 				}
+			}
+		}
 	}
-
-    fprintf( file, "};\n" );
+	
+	
+    fprintf( file, "};\n\n" );
+    fprintf( file,"\nstatic int used[MAX_SIZE]={0};\n");
+	fprintf( file,"int indexP=0;\n");
+	
+	fprintf(file,"\nvoid add_production(int i){\n");
+	fprintf(file,"\tused[indexP++]=i;\n");
+	fprintf(file,"}\n");
 }
 
 
-static void print_process_function( FILE *file, struct grammar *grammar ) {
+static void define( FILE *file, grammar *g ) {
 
     fprintf( file, "\n" );
     fprintf( file, "\n" );
-    fprintf( file, "static bool process( char *str, struct production prod ) {\n");
+    fprintf( file, "static bool procesar( char *str, struct production prod ) {\n");
     fprintf( file, "\n" );
     fprintf( file, "\twhile ( *prod.data ) {\n" );
     fprintf( file, "\n" );
@@ -83,7 +101,7 @@ static void print_process_function( FILE *file, struct grammar *grammar ) {
     fprintf( file, "\t}\n" );
     fprintf( file, "\n" );
     fprintf( file, "\tif ( prod.next ) {\n" );
-    fprintf( file, "\t\treturn process( str, *prod.next );\n" );
+    fprintf( file, "\t\treturn procesar( str, *prod.next );\n" );
     fprintf( file, "\t}\n" );
     fprintf( file, "\n" );
     fprintf( file, "\treturn !*str;\n" );
@@ -91,32 +109,32 @@ static void print_process_function( FILE *file, struct grammar *grammar ) {
 }
 
 
-static void print_non_terminal_function( FILE *file, grammar *grammar, char vn , int* pos) {
+static void define_non_terminal_function( FILE *file, grammar *g, char vn , int* pos) {
 
     production* p;
 
     fprintf( file, "\n" );
     fprintf( file, "\n" );
-    fprintf( file, "bool process_%c( char *str, struct production prod ) {\n", vn );
+    fprintf( file, "bool procesar_%c( char *str, struct production prod ) {\n", vn );
     fprintf( file, "\n" );
 
-	reset(grammar->P);
+	reset(g->P);
 	int size=0;
-    while(p=getNext(grammar->P)){
+    while(p=getNext(g->P)){
 		if(p->left==vn){
 			size++;
 			reset(p->right);
 			char *c=getNext(p->right);
 			if ( *c != '\\' ) {
-				fprintf( file, "\tif ( process( str, (struct production){ \"%c", *c);
+				fprintf( file, "\tif ( procesar( str, (struct production){ \"%c", *c);
 				while(c=getNext(p->right)){
 					fprintf( file, "%c", *c);
 				}
 				fprintf( file, "\", &prod } ) ) {\n");
 			} else {
-				fprintf( file, "\tif ( process( str, (struct production){ \"\\\\\", &prod } ) ) {\n" );
+				fprintf( file, "\tif ( procesar( str, (struct production){ \"\\\\\", &prod } ) ) {\n" );
 			}
-
+			fprintf( file, "\t\tadd_production(%d);\n", *pos);
 			fprintf( file, "\t\tproductions_count[ %d ]++;\n", (*pos)++ );
 			fprintf( file, "\t\treturn true;\n" );
 			fprintf( file, "\t}\n" );
@@ -129,7 +147,7 @@ static void print_non_terminal_function( FILE *file, grammar *grammar, char vn ,
 }
 
 
-static void print_main( FILE *file, struct grammar *grammar ) {
+static void define_main( FILE *file, grammar *g ) {
 
     fprintf( file, "\n" );
     fprintf( file, "\n" );
@@ -139,19 +157,19 @@ static void print_main( FILE *file, struct grammar *grammar ) {
     fprintf( file, "\n" );
     fprintf( file, "\tif ( argc != 2 ) {\n" );
     fprintf( file, "\n" );
-    fprintf( file, "\t\tprintf( \"Usage:\\n\\tASDR word\\n\" );\n" );
+    fprintf( file, "\t\tprintf( \"Uso:\\n\\tASDR cadena\\n\" );\n" );
     fprintf( file, "\t\treturn 1;\n" );
     fprintf( file, "\t}\n" );
     fprintf( file, "\n" );
-    fprintf( file, "\tif ( process_%c( argv[1], (struct production){ \"\", NULL } ) ) {\n", grammar->S );
+    fprintf( file, "\tif ( procesar_%c( argv[1], (struct production){ \"\", NULL } ) ) {\n", g->S );
     fprintf( file, "\n" );
-    fprintf( file, "\t\tprintf( \"%%s belongs.\\n\", argv[1] );\n" );
-    fprintf( file, "\t\tprintf( \"The productions used were:\\n\" );\n" );
+    fprintf( file, "\t\tprintf( \"%%s pertenece.\\n\", argv[1] );\n" );
+    fprintf( file, "\t\tprintf( \"El conjunto de producciones usadas es:\\n\" );\n" );
     fprintf( file, "\n" );
     int size=0;
-    reset(grammar->P);
+    reset(g->P);
     production *p;
-    while(p=getNext(grammar->P)){
+    while(p=getNext(g->P)){
 		size++;
 	}
     fprintf( file, "\t\tfor ( i = 0; i < %d; i++ ) {\n", size );
@@ -159,10 +177,15 @@ static void print_main( FILE *file, struct grammar *grammar ) {
     fprintf( file, "\t\t\t\tprintf( \"\\t%%s\\n\", productions[ i ] );\n" );
     fprintf( file, "\t\t\t}\n" );
     fprintf( file, "\t\t}\n" );
+    fprintf( file, "\t\tprintf(\"En el siguiente orden:\\n\");\n");
+    fprintf( file, "\t\tfor(i=indexP-1; i>=0; i--){\n");
+	fprintf( file, "\t\t\tprintf(\"%%s\t\",productions[used[i]]);\n");
+	fprintf( file, "\t\t}\n");
+	fprintf( file, "\t\tprintf(\"\\n\");\n");
     fprintf( file, "\n" );
     fprintf( file, "\t} else {\n" );
     fprintf( file, "\n" );
-    fprintf( file, "\t\tprintf( \"%%s doesn't belong.\\n\", argv[1] );\n" );
+    fprintf( file, "\t\tprintf( \"%%s no pertenece.\\n\", argv[1] );\n" );
     fprintf( file, "\t}\n" );
     fprintf( file, "\n" );
     fprintf( file, "\treturn 0;\n" );
@@ -170,26 +193,25 @@ static void print_main( FILE *file, struct grammar *grammar ) {
 }
 
 
-void print_parser( FILE *file, grammar *g ) {
+void print_all( FILE *file, grammar *g ) {
 
-    print_declarations( file, g );
+    declare( file, g );
 
-    print_process_function( file, g );
+    define( file, g );
 	int i, j=0;
-    for ( i = 0;
-     i<SIZE; i++ ) {
+    for ( i = 0; i<SIZE; i++ ) {
 		if(g->VN[i]){
-			print_non_terminal_function( file, g, i+'A', &j );
+			define_non_terminal_function( file, g, i+'A', &j );
 		}
     }
 
-    print_main( file, g );
+    define_main( file, g );
 }
 
 void generateASDR(grammar* g){
 	FILE* source;
 	source=fopen("ASDR.c","w");
-	print_parser(source,g);
+	print_all(source,g);
 	fclose(source);
 }
 

@@ -145,7 +145,8 @@ insertNode( listADT list, listElementT element, int (*f)(void *, void*))
 void
 insert( listADT list, listElementT element)
 {
-	if (element == NULL || elementBelongs(list, element)){
+	if (element == NULL ){
+		//|| elementBelongs(list, element)
 		printf("Already belongs!\n");
 		return;
 	}
