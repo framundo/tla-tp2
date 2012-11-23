@@ -1,0 +1,12 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Objetivo}{3}
+\contentsline {section}{\numberline {2}Funcionamiento del programa}{3}
+\contentsline {section}{\numberline {3}Estructura de las gram\'aticas}{3}
+\contentsline {section}{\numberline {4}Funcionamiento del ASDR}{4}
+\contentsline {section}{\numberline {5}Consideraciones realizadas}{4}
+\contentsline {section}{\numberline {6}Dise\~no y desarrollo}{4}
+\contentsline {subsection}{\numberline {6.1}An\'alisis de la gram\'atica}{4}
+\contentsline {subsection}{\numberline {6.2}Procesamiento de cadenas}{4}
+\contentsline {section}{\numberline {7}Dificultades encontradas}{5}
+\contentsline {section}{\numberline {8}Futuras extensiones}{5}
+\contentsline {section}{\numberline {9}Ejemplo de uso}{5}
