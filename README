@@ -1,0 +1,5 @@
+1- Ejecutar comando "make"
+2- Ejecutar comando "bin/genASDR file" donde 'file' es el path al archivo de la gramatica. En nuestro caso hay varias gramaticas de ejemplo en gr/*
+3- Compilar el archivo "ASDR.c" generado en la carpeta tla-tp2 (gcc ASDR.c(por default el ejecutable se llamaria a.out pero se puede agregar otro parametro que seria el nombre del archivo de salida))
+4- El archivo compilado se ejecuta de la siguiente manera:
+          path_al_ejecutable cadena_a_validar
